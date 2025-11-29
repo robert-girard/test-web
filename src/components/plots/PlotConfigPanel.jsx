@@ -11,7 +11,9 @@ function PlotConfigPanel({
   availableArbIds,
   onAddEntry,
   onUpdateEntry,
-  onDeleteEntry
+  onDeleteEntry,
+  onClearAll,
+  filename
 }) {
   const [showForm, setShowForm] = useState(false);
   const [editingEntry, setEditingEntry] = useState(null);
@@ -56,14 +58,35 @@ function PlotConfigPanel({
     }
   };
 
+  // Handle clear all
+  const handleClearAll = () => {
+    if (window.confirm('Are you sure you want to clear all signal configurations?')) {
+      onClearAll();
+    }
+  };
+
   return (
     <div className="plot-config-panel">
       <div className="panel-header">
-        <h2>Signal Configuration</h2>
+        <div>
+          <h2>Signal Configuration</h2>
+          {filename && (
+            <div className="filename-indicator">
+              {filename} <span className="auto-saved">(Auto-saved)</span>
+            </div>
+          )}
+        </div>
         {!showForm && (
-          <button className="btn-add" onClick={handleAddClick}>
-            + Add Signal
-          </button>
+          <div className="header-buttons">
+            <button className="btn-add" onClick={handleAddClick}>
+              + Add Signal
+            </button>
+            {entries.length > 0 && (
+              <button className="btn-clear" onClick={handleClearAll}>
+                Clear All
+              </button>
+            )}
+          </div>
         )}
       </div>
 

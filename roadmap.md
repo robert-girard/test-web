@@ -110,9 +110,9 @@
     * *Implementation: Filter in extractSignal function (src/utils/signalExtractor.js:47-49)*
 * \[x\] **Data Storage:**
   * \[x\] **Local State:** Store plot configurations in React state.
-    * *Implementation: plotEntries state in PlotsPage (src/components/plots/PlotsPage.jsx:20)*
-  * \[ \] **Persistence:** Save configurations to localStorage (stretch goal).
-    * *Not implemented - future enhancement*
+    * *Implementation: plotEntries state in PlotsPage (src/components/plots/PlotsPage.jsx:21)*
+  * \[x\] **Persistence:** Save configurations to localStorage (stretch goal).
+    * *Implementation: Auto-save/load plot configs per filename using localStorage (src/components/plots/PlotsPage.jsx:26-57, backend/app.py:131)*
   * \[ \] **Export Configuration:** Download plot config as JSON (stretch goal).
     * *Not implemented - future enhancement*
 

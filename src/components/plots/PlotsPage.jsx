@@ -1,4 +1,4 @@
-import { useState, useMemo, useContext } from 'react';
+import { useState, useMemo, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PlotConfigPanel from './PlotConfigPanel.jsx';
 import PlotDisplayArea from './PlotDisplayArea.jsx';
@@ -6,6 +6,8 @@ import { DataContext } from '../../App.jsx';
 import { extractMultipleSignals, getUniqueArbIds } from '../../utils/signalExtractor.js';
 import { SIGNAL_COLORS } from '../../constants/plotTypes.js';
 import './PlotsPage.css';
+
+const STORAGE_KEY_PREFIX = 'can_plot_configs_';
 
 /**
  * Main plots page container
@@ -18,6 +20,41 @@ function PlotsPage() {
   // State for plot entries
   const [plotEntries, setPlotEntries] = useState([]);
   const [chartEngine] = useState('plotly'); // Can be extended to support switching
+  const [storageKey, setStorageKey] = useState(null);
+
+  // Load plot configurations from localStorage when data changes
+  useEffect(() => {
+    if (!processedData || !processedData.filename) return;
+
+    const key = STORAGE_KEY_PREFIX + processedData.filename;
+    setStorageKey(key);
+
+    try {
+      const saved = localStorage.getItem(key);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setPlotEntries(parsed);
+        console.log(`Loaded ${parsed.length} plot configurations for ${processedData.filename}`);
+      } else {
+        setPlotEntries([]);
+      }
+    } catch (error) {
+      console.error('Error loading plot configurations:', error);
+      setPlotEntries([]);
+    }
+  }, [processedData?.filename]);
+
+  // Save plot configurations to localStorage when they change
+  useEffect(() => {
+    if (!storageKey) return;
+
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(plotEntries));
+      console.log(`Saved ${plotEntries.length} plot configurations`);
+    } catch (error) {
+      console.error('Error saving plot configurations:', error);
+    }
+  }, [plotEntries, storageKey]);
 
   // Check if data is loaded
   if (!processedData || !processedData.messages || processedData.messages.length === 0) {
@@ -78,6 +115,11 @@ function PlotsPage() {
     setPlotEntries(prev => prev.filter(entry => entry.id !== entryId));
   };
 
+  // Clear all plot entries
+  const handleClearAll = () => {
+    setPlotEntries([]);
+  };
+
   return (
     <div className="plots-page">
       <div className="plots-container">
@@ -88,6 +130,8 @@ function PlotsPage() {
           onAddEntry={handleAddEntry}
           onUpdateEntry={handleUpdateEntry}
           onDeleteEntry={handleDeleteEntry}
+          onClearAll={handleClearAll}
+          filename={processedData.filename}
         />
 
         <PlotDisplayArea

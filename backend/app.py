@@ -128,6 +128,7 @@ def process_csv():
 
         response = {
             'message': f"Successfully processed {filename}",
+            'filename': filename,
             'total_messages': len(messages),
             'unique_arbids': unique_arbids,
             'protocol': protocol,
