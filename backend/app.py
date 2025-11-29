@@ -122,12 +122,17 @@ def process_csv():
         # Gather statistics
         unique_arbids = len(set(msg['arbitration_id'] for msg in messages))
 
+        # Add payload length to each message
+        for msg in messages:
+            msg['length'] = len(msg['payload']) // 2  # Convert hex string length to byte count
+
         response = {
             'message': f"Successfully processed {filename}",
             'total_messages': len(messages),
             'unique_arbids': unique_arbids,
             'protocol': protocol,
-            'multiplexing': multiplexing
+            'multiplexing': multiplexing,
+            'messages': messages  # Include the actual processed messages
         }
 
         return jsonify(response)

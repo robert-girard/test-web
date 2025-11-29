@@ -1,116 +1,29 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import Navigation from './components/Navigation'
+import InputPage from './components/InputPage'
+import TableView from './components/TableView'
 import './App.css'
 
 function App() {
-  const [csvFile, setCsvFile] = useState(null)
-  const [multiplexing, setMultiplexing] = useState('none')
-  const [protocol, setProtocol] = useState('none')
+  const [processedData, setProcessedData] = useState(null)
 
-  // Multiplexing is only enabled for isotp and J1939 protocols
-  const isMultiplexingEnabled = protocol === 'isotp' || protocol === 'J1939'
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0]
-    if (file && file.type === 'text/csv') {
-      setCsvFile(file)
-    } else {
-      alert('Please select a valid CSV file')
-      event.target.value = null
-    }
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    if (!csvFile) {
-      alert('Please select a CSV file')
-      return
-    }
-
-    // Use full URL in development, relative URL in production
-    const apiUrl = import.meta.env.DEV
-      ? 'http://localhost:5000/api/process'
-      : '/api/process'
-
-    try {
-      // Read file content
-      const fileContent = await csvFile.text()
-
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          filename: csvFile.name,
-          content: fileContent,
-          multiplexing: multiplexing,
-          protocol: protocol,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (data.error) {
-        alert('Error: ' + data.error)
-      } else {
-        alert(`Processed ${data.total_messages} messages\nUnique ArbIDs: ${data.unique_arbids}\n\n${data.message}`)
-      }
-    } catch (error) {
-      alert('Error connecting to server: ' + error.message)
-    }
+  const handleDataProcessed = (data) => {
+    setProcessedData(data)
   }
 
   return (
-    <div className="app">
-      <div className="form-container">
-        <h1>CSV File Processor</h1>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="csvFile">CSV File:</label>
-            <input
-              type="file"
-              id="csvFile"
-              accept=".csv"
-              onChange={handleFileChange}
-            />
-            {csvFile && <p className="file-name">Selected: {csvFile.name}</p>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="multiplexing">Multiplexing:</label>
-            <select
-              id="multiplexing"
-              value={multiplexing}
-              onChange={(e) => setMultiplexing(e.target.value)}
-              disabled={!isMultiplexingEnabled}
-              className={!isMultiplexingEnabled ? 'disabled' : ''}
-            >
-              <option value="none">none</option>
-              <option value="byte mask">byte mask</option>
-              <option value="byte">byte</option>
-              <option value="2 byte">2 byte</option>
-            </select>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="protocol">Protocol:</label>
-            <select
-              id="protocol"
-              value={protocol}
-              onChange={(e) => setProtocol(e.target.value)}
-            >
-              <option value="none">none</option>
-              <option value="isotp">isotp</option>
-              <option value="J1939">J1939</option>
-            </select>
-          </div>
-
-          <button type="submit">Process</button>
-        </form>
+    <Router>
+      <div className="app">
+        <Navigation />
+        <div className="content">
+          <Routes>
+            <Route path="/" element={<InputPage onDataProcessed={handleDataProcessed} />} />
+            <Route path="/table" element={<TableView processedData={processedData} />} />
+          </Routes>
+        </div>
       </div>
-    </div>
+    </Router>
   )
 }
 
