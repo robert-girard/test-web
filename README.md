@@ -1,15 +1,36 @@
-# CSV File Processor
+# CAN Analysis Tool
 
-A full-stack web application for processing CSV files with configurable multiplexing and protocol options. Built with React frontend and Flask backend.
+A full-stack CAN (Controller Area Network) bus analysis tool for processing and visualizing automotive/industrial CAN data. The application processes CSV files containing CAN messages, strips protocol layers (ISO-TP, UDS, J1939), collapses multi-frame messages, and provides tabular views, signal plotting, and analysis capabilities.
+
+Built with React frontend and Flask backend.
 
 ## Features
 
-- CSV file upload with validation
-- Configurable multiplexing options: none, byte mask, byte, 2 byte
-- Protocol selection: none, isotp, J1939
+### Phase 1 & 2 (Completed)
+- CSV file upload with CAN message parsing
+- ISO-TP protocol processing with multi-frame collapse
+- Tabular data view with advanced filtering and sorting
+- Regex-based payload filtering
+- ArbID inclusion/exclusion filters
+- Hex/Binary payload display toggle
 - Modern glassmorphic UI design
-- Flask backend API for processing
 - Single server deployment (Flask serves React)
+
+### Phase 3 (In Progress)
+- Signal plotting & extraction
+- Manual signal configuration
+- Multiple data type support (int8/16/24/32, uint8/16/24/32, float16/32)
+- Time-series visualization
+
+## Documentation
+
+- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Complete architectural documentation with Mermaid diagrams
+  - Component hierarchy and design patterns
+  - Data models and entity relationships
+  - Sequence diagrams for key workflows
+  - Extension points for adding features
+- **[roadmap.md](./roadmap.md)** - Phased development plan with implementation tracking
+- **[CLAUDE.md](./CLAUDE.md)** - Context for future development sessions
 
 ## Project Structure
 
