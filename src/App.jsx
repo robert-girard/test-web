@@ -6,6 +6,9 @@ function App() {
   const [multiplexing, setMultiplexing] = useState('none')
   const [protocol, setProtocol] = useState('none')
 
+  // Multiplexing is only enabled for isotp and J1939 protocols
+  const isMultiplexingEnabled = protocol === 'isotp' || protocol === 'J1939'
+
   const handleFileChange = (event) => {
     const file = event.target.files[0]
     if (file && file.type === 'text/csv') {
@@ -30,6 +33,9 @@ function App() {
       : '/api/process'
 
     try {
+      // Read file content
+      const fileContent = await csvFile.text()
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -37,13 +43,19 @@ function App() {
         },
         body: JSON.stringify({
           filename: csvFile.name,
+          content: fileContent,
           multiplexing: multiplexing,
           protocol: protocol,
         }),
       })
 
       const data = await response.json()
-      alert(data.message)
+
+      if (data.error) {
+        alert('Error: ' + data.error)
+      } else {
+        alert(`Processed ${data.total_messages} messages\nUnique ArbIDs: ${data.unique_arbids}\n\n${data.message}`)
+      }
     } catch (error) {
       alert('Error connecting to server: ' + error.message)
     }
@@ -72,6 +84,8 @@ function App() {
               id="multiplexing"
               value={multiplexing}
               onChange={(e) => setMultiplexing(e.target.value)}
+              disabled={!isMultiplexingEnabled}
+              className={!isMultiplexingEnabled ? 'disabled' : ''}
             >
               <option value="none">none</option>
               <option value="byte mask">byte mask</option>

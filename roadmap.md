@@ -1,13 +1,15 @@
 # **CAN Analysis Tool Roadmap**
 
-## **Phase 1: UI Polish & Input Handling**
+## **Phase 1: UI Polish & Input Handling** ✅ COMPLETED
 
 **Goal:** Refine the initial ingestion interface before moving to complex visualizations.
 
-* \[ \] **UI Logic:** Disable/Gray out the "Multiplexing" dropdown menu initially (User Requirement).  
-  * *Note: This should be enabled only if specific protocols that support multiplexing definitions are selected, or removed entirely if not needed for the current MVP.*  
-* \[ \] **Backend:** Ensure Flask endpoint accepts the file upload and arguments (Protocol/Multiplexing selection).  
-* \[ \] **Data Processing:** Implement the logic to strip protocols (ISO-TP, UDS, etc.) and collapse multi-frames into single (Timestamp, ArbID, Payload) objects.
+* \[x\] **UI Logic:** Disable/Gray out the "Multiplexing" dropdown menu initially (User Requirement).
+  * *Implementation: Dropdown disabled by default, enabled only when isotp or J1939 protocols are selected (src/App.jsx:10, 87-88)*
+* \[x\] **Backend:** Ensure Flask endpoint accepts the file upload and arguments (Protocol/Multiplexing selection).
+  * *Implementation: Flask endpoint accepts file content, filename, protocol, and multiplexing options (backend/app.py:98-136)*
+* \[x\] **Data Processing:** Implement the logic to strip protocols (ISO-TP, UDS, etc.) and collapse multi-frames into single (Timestamp, ArbID, Payload) objects.
+  * *Implementation: ISO-TP processing with multi-frame collapse implemented (backend/app.py:29-96). Handles Single Frame (0x0X), First Frame (0x1X), Consecutive Frame (0x2X), and Flow Control (0x3X) frames.*
 
 ## **Phase 2: Tabular Data View (The "Raw" Page)**
 
