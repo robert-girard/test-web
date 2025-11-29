@@ -56,20 +56,20 @@
   * \[ \] **Entry List:** Display all configured plot entries in a sidebar/panel.
 * \[ \] **Signal Configuration UI:**
   * \[ \] **ArbID Selector:** Dropdown to select which Arbitration ID to extract from.
-  * \[ \] **Start Bit:** Input field for bit offset (0-63 for 8-byte payload).
+  * \[ \] **Start Bit:** Input field for bit offset (0-x where x is the size of the payload. they are expected to be the same for an given arb id).
   * \[ \] **Data Type Selector:** Dropdown with options:
-    * Signed Integer: int8, int16, int24
-    * Unsigned Integer: uint8, uint16, uint24
+    * Signed Integer: int8, int16, int24, int32
+    * Unsigned Integer: uint8, uint16, uint24, uint32
     * Float: float16 (half), float32 (single)
   * \[ \] **Endianness:** Radio buttons for Big Endian / Little Endian.
   * \[ \] **Scaling Factor:** Input field for multiplication factor (default: 1.0).
   * \[ \] **Offset:** Input field for addition offset (default: 0.0).
   * \[ \] **Signal Name:** Optional text field to label the signal.
 * \[ \] **Visual Bit Selection:**
-  * \[ \] **Payload Diagram:** Visual representation of the 64-bit payload (8 bytes).
+  * \[ \] **Payload Diagram:** Visual representation of the payload.
   * \[ \] **Bit Highlighting:** Selected bits (start bit + data type length) should be highlighted.
   * \[ \] **Interactive Selection:** Click/drag on diagram to set start bit (stretch goal).
-  * \[ \] **Bit Numbering:** Show bit indices (0-63) and byte boundaries.
+  * \[ \] **Bit Numbering:** Show bit indices (0-x) and byte boundaries.
 * \[ \] **Plotting Engine:**
   * \[ \] **Chart Library:** Integrate a charting library (e.g., Chart.js, Recharts, or Plotly).
   * \[ \] **Time-Series Plot:** X-axis: timestamp, Y-axis: extracted signal value.
