@@ -1,0 +1,20 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "r_girard", email = "r_girard@live.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "flask>=3.1.2",
+    "flask-cors>=6.0.1",
+]
+
+[project.scripts]
+backend = "backend:main"
+
+[build-system]
+requires = ["uv_build>=0.9.13,<0.10.0"]
+build-backend = "uv_build"
