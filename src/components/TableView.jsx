@@ -10,6 +10,7 @@ function TableView({ processedData }) {
   const [arbidFilter, setArbidFilter] = useState('')
   const [filterType, setFilterType] = useState('include') // 'include' or 'exclude'
   const [regexError, setRegexError] = useState(null)
+  const [displayMode, setDisplayMode] = useState('hex') // 'hex' or 'binary'
 
   if (!processedData || !processedData.messages) {
     return (
@@ -80,9 +81,22 @@ function TableView({ processedData }) {
     }
   }
 
+  const hexToBinary = (hexString) => {
+    // Convert hex string to binary with byte grouping
+    const bytes = hexString.match(/.{1,2}/g) || []
+    return bytes.map(byte => {
+      const decimal = parseInt(byte, 16)
+      return decimal.toString(2).padStart(8, '0')
+    }).join(' ')
+  }
+
   const formatPayload = (payload) => {
-    // Add spaces every 2 characters for readability
-    return payload.match(/.{1,2}/g)?.join(' ') || payload
+    if (displayMode === 'binary') {
+      return hexToBinary(payload)
+    } else {
+      // Add spaces every 2 characters for hex readability
+      return payload.match(/.{1,2}/g)?.join(' ') || payload
+    }
   }
 
   return (
@@ -126,6 +140,24 @@ function TableView({ processedData }) {
               value={arbidFilter}
               onChange={(e) => setArbidFilter(e.target.value)}
             />
+          </div>
+        </div>
+
+        <div className="filter-group">
+          <label>Payload Display:</label>
+          <div className="display-toggle">
+            <button
+              className={displayMode === 'hex' ? 'toggle-btn active' : 'toggle-btn'}
+              onClick={() => setDisplayMode('hex')}
+            >
+              Hex
+            </button>
+            <button
+              className={displayMode === 'binary' ? 'toggle-btn active' : 'toggle-btn'}
+              onClick={() => setDisplayMode('binary')}
+            >
+              Binary
+            </button>
           </div>
         </div>
 

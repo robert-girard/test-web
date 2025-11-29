@@ -30,15 +30,19 @@
   * \[x\] **ArbID Filter:** specific ArbID inclusion/exclusion list.
     * *Implementation: Comma-separated ArbID list with include/exclude toggle (src/components/TableView.jsx:49-60, 119-134)*
 
-## **Phase 2.5: Table View Enhancements**
+## **Phase 2.5: Table View Enhancements** ✅ COMPLETED
 
 **Goal:** Add binary representation toggle to improve payload inspection.
 
-* \[ \] **Hex/Binary Toggle:** Add a toggle button to switch payload display between hexadecimal and binary representation.
-  * \[ \] Global toggle affects all rows in the table.
-  * \[ \] Binary format should group bits by byte (e.g., `00000001 00000010`).
-  * \[ \] Maintain current filtering and sorting functionality.
-  * \[ \] Preserve toggle state when switching between tabs.
+* \[x\] **Hex/Binary Toggle:** Add a toggle button to switch payload display between hexadecimal and binary representation.
+  * \[x\] Global toggle affects all rows in the table.
+    * *Implementation: Toggle buttons in filters section (src/components/TableView.jsx:146-162). State stored in `displayMode` (line 13)*
+  * \[x\] Binary format should group bits by byte (e.g., `00000001 00000010`).
+    * *Implementation: `hexToBinary()` function converts hex to binary with byte grouping (src/components/TableView.jsx:84-91)*
+  * \[x\] Maintain current filtering and sorting functionality.
+    * *Implementation: Display mode only affects formatting, not filtering/sorting logic (line 93-100)*
+  * \[x\] Preserve toggle state when switching between tabs.
+    * *Implementation: State persists in React component while navigating between tabs*
 
 ## **Phase 3: Signal Plotting & Extraction**
 

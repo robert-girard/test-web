@@ -98,6 +98,41 @@
   flex: 1;
 }
 
+.display-toggle {
+  display: flex;
+  gap: 0;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 8px 16px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.2s;
+  min-width: 80px;
+}
+
+.toggle-btn:first-child {
+  border-right: 1px solid #e0e0e0;
+}
+
+.toggle-btn:hover:not(.active) {
+  background: #f8f9ff;
+  color: #667eea;
+}
+
+.toggle-btn.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
 .clear-filters {
   align-self: flex-start;
   padding: 8px 16px;
