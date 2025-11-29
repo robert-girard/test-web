@@ -20,6 +20,12 @@ function Navigation() {
           >
             Table View
           </NavLink>
+          <NavLink
+            to="/plots"
+            className={({ isActive }) => isActive ? 'nav-tab active' : 'nav-tab'}
+          >
+            Plots
+          </NavLink>
         </div>
       </div>
     </nav>

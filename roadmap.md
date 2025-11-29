@@ -44,48 +44,84 @@
   * \[x\] Preserve toggle state when switching between tabs.
     * *Implementation: State persists in React component while navigating between tabs*
 
-## **Phase 3: Signal Plotting & Extraction**
+## **Phase 3: Signal Plotting & Extraction** ✅ COMPLETED
 
 **Goal:** Manual signal extraction and time-series plotting for CAN data analysis.
 
-* \[ \] **Navigation:** Add "Plots" tab to navigation bar.
-* \[ \] **Plot Entry Management:**
-  * \[ \] **Add Entry:** Button to create new plot configuration.
-  * \[ \] **Remove Entry:** Delete button for each plot entry.
-  * \[ \] **Edit Entry:** Inline editing of plot configuration.
-  * \[ \] **Entry List:** Display all configured plot entries in a sidebar/panel.
-* \[ \] **Signal Configuration UI:**
-  * \[ \] **ArbID Selector:** Dropdown to select which Arbitration ID to extract from.
-  * \[ \] **Start Bit:** Input field for bit offset (0-x where x is the size of the payload. they are expected to be the same for an given arb id).
-  * \[ \] **Data Type Selector:** Dropdown with options:
+* \[x\] **Navigation:** Add "Plots" tab to navigation bar.
+  * *Implementation: Added "/plots" route to Navigation component (src/components/Navigation.jsx:23-28)*
+* \[x\] **Plot Entry Management:**
+  * \[x\] **Add Entry:** Button to create new plot configuration.
+    * *Implementation: PlotConfigPanel with "Add Signal" button (src/components/plots/PlotConfigPanel.jsx:21-26)*
+  * \[x\] **Remove Entry:** Delete button for each plot entry.
+    * *Implementation: Delete button in PlotEntryList with confirmation dialog (src/components/plots/PlotEntryList.jsx:63-69)*
+  * \[x\] **Edit Entry:** Inline editing of plot configuration.
+    * *Implementation: Edit button in PlotEntryList, reuses PlotEntryForm (src/components/plots/PlotEntryList.jsx:56-62)*
+  * \[x\] **Entry List:** Display all configured plot entries in a sidebar/panel.
+    * *Implementation: PlotEntryList component with signal details (src/components/plots/PlotEntryList.jsx)*
+* \[x\] **Signal Configuration UI:**
+  * \[x\] **ArbID Selector:** Dropdown to select which Arbitration ID to extract from.
+    * *Implementation: Dropdown populated from unique ArbIDs in data (src/components/plots/PlotEntryForm.jsx:123-133)*
+  * \[x\] **Start Bit:** Input field for bit offset (0-x where x is the size of the payload. they are expected to be the same for an given arb id).
+    * *Implementation: Number input with validation (src/components/plots/PlotEntryForm.jsx:164-172)*
+  * \[x\] **Data Type Selector:** Dropdown with options:
     * Signed Integer: int8, int16, int24, int32
     * Unsigned Integer: uint8, uint16, uint24, uint32
     * Float: float16 (half), float32 (single)
-  * \[ \] **Endianness:** Radio buttons for Big Endian / Little Endian.
-  * \[ \] **Scaling Factor:** Input field for multiplication factor (default: 1.0).
-  * \[ \] **Offset:** Input field for addition offset (default: 0.0).
-  * \[ \] **Signal Name:** Optional text field to label the signal.
-* \[ \] **Visual Bit Selection:**
-  * \[ \] **Payload Diagram:** Visual representation of the payload.
-  * \[ \] **Bit Highlighting:** Selected bits (start bit + data type length) should be highlighted.
-  * \[ \] **Interactive Selection:** Click/drag on diagram to set start bit (stretch goal).
-  * \[ \] **Bit Numbering:** Show bit indices (0-x) and byte boundaries.
-* \[ \] **Plotting Engine:**
-  * \[ \] **Chart Library:** Integrate a charting library (e.g., Chart.js, Recharts, or Plotly).
-  * \[ \] **Time-Series Plot:** X-axis: timestamp, Y-axis: extracted signal value.
-  * \[ \] **Multi-Signal Support:** Display multiple signals on the same plot with different colors.
-  * \[ \] **Legend:** Show signal names and colors.
-  * \[ \] **Zoom/Pan:** Interactive controls for exploring data.
-* \[ \] **Signal Extraction Logic (Backend or Frontend):**
-  * \[ \] **Bit Extraction:** Extract N bits starting from start bit position.
-  * \[ \] **Endianness Handling:** Convert between big-endian and little-endian.
-  * \[ \] **Type Conversion:** Convert raw bits to int8/16/24, uint8/16/24, float16/32.
-  * \[ \] **Scaling & Offset:** Apply formula: `physical_value = (raw_value * scale) + offset`.
-  * \[ \] **Filter by ArbID:** Only process messages matching selected ArbID.
-* \[ \] **Data Storage:**
-  * \[ \] **Local State:** Store plot configurations in React state.
+    * *Implementation: Dropdown with all types from constants (src/components/plots/PlotEntryForm.jsx:135-147, src/constants/plotTypes.js:36-47)*
+  * \[x\] **Endianness:** Radio buttons for Big Endian / Little Endian.
+    * *Implementation: Dropdown selector for endianness (src/components/plots/PlotEntryForm.jsx:150-160)*
+  * \[x\] **Scaling Factor:** Input field for multiplication factor (default: 1.0).
+    * *Implementation: Number input with step="any" (src/components/plots/PlotEntryForm.jsx:186-195)*
+  * \[x\] **Offset:** Input field for addition offset (default: 0.0).
+    * *Implementation: Number input with step="any" (src/components/plots/PlotEntryForm.jsx:198-207)*
+  * \[x\] **Signal Name:** Optional text field to label the signal.
+    * *Implementation: Text input, required field (src/components/plots/PlotEntryForm.jsx:113-121)*
+* \[x\] **Visual Bit Selection:**
+  * \[x\] **Payload Diagram:** Visual representation of the payload.
+    * *Implementation: GridBitSelector with byte-organized grid (src/components/plots/bitSelector/GridBitSelector.jsx)*
+  * \[x\] **Bit Highlighting:** Selected bits (start bit + data type length) should be highlighted.
+    * *Implementation: CSS class 'selected' applied to bits in range (src/components/plots/bitSelector/GridBitSelector.jsx:21-23)*
+  * \[x\] **Interactive Selection:** Click/drag on diagram to set start bit (stretch goal).
+    * *Implementation: Click to set start bit (src/components/plots/bitSelector/GridBitSelector.jsx:26-30, 48)*
+  * \[x\] **Bit Numbering:** Show bit indices (0-x) and byte boundaries.
+    * *Implementation: Bits numbered and grouped by bytes (src/components/plots/bitSelector/GridBitSelector.jsx:40-60)*
+* \[x\] **Plotting Engine:**
+  * \[x\] **Chart Library:** Integrate a charting library (e.g., Chart.js, Recharts, or Plotly).
+    * *Implementation: Plotly.js via react-plotly.js (src/components/plots/charts/PlotlyAdapter.jsx)*
+  * \[x\] **Time-Series Plot:** X-axis: timestamp, Y-axis: extracted signal value.
+    * *Implementation: Scatter plot with lines+markers (src/components/plots/charts/PlotlyAdapter.jsx:12-21)*
+  * \[x\] **Multi-Signal Support:** Display multiple signals on the same plot with different colors.
+    * *Implementation: Multiple traces with automatic color assignment (src/components/plots/charts/PlotlyAdapter.jsx:11, src/constants/plotTypes.js:61-70)*
+  * \[x\] **Legend:** Show signal names and colors.
+    * *Implementation: Plotly legend with signal names (src/components/plots/charts/PlotlyAdapter.jsx:36-44)*
+  * \[x\] **Zoom/Pan:** Interactive controls for exploring data.
+    * *Implementation: Plotly built-in zoom/pan with mode bar (src/components/plots/charts/PlotlyAdapter.jsx:53-64)*
+* \[x\] **Signal Extraction Logic (Backend or Frontend):**
+  * \[x\] **Bit Extraction:** Extract N bits starting from start bit position.
+    * *Implementation: Frontend extraction in signalExtractor.js using bitOperations utilities (src/utils/signalExtractor.js:54-56, src/utils/bitOperations.js:33-47)*
+  * \[x\] **Endianness Handling:** Convert between big-endian and little-endian.
+    * *Implementation: Byte reversal for little-endian (src/utils/signalExtractor.js:63-65, src/utils/bitOperations.js:81-97)*
+  * \[x\] **Type Conversion:** Convert raw bits to int8/16/24, uint8/16/24, float16/32.
+    * *Implementation: Type converters for all data types including IEEE 754 floats (src/utils/dataTypeConverters.js)*
+  * \[x\] **Scaling & Offset:** Apply formula: `physical_value = (raw_value * scale) + offset`.
+    * *Implementation: applyScalingAndOffset function (src/utils/dataTypeConverters.js:93-99, src/utils/signalExtractor.js:71)*
+  * \[x\] **Filter by ArbID:** Only process messages matching selected ArbID.
+    * *Implementation: Filter in extractSignal function (src/utils/signalExtractor.js:47-49)*
+* \[x\] **Data Storage:**
+  * \[x\] **Local State:** Store plot configurations in React state.
+    * *Implementation: plotEntries state in PlotsPage (src/components/plots/PlotsPage.jsx:20)*
   * \[ \] **Persistence:** Save configurations to localStorage (stretch goal).
+    * *Not implemented - future enhancement*
   * \[ \] **Export Configuration:** Download plot config as JSON (stretch goal).
+    * *Not implemented - future enhancement*
+
+**Architecture:**
+- **Strategy Pattern:** Implemented for bit selectors (BitSelectorWrapper) and chart engines (ChartWrapper)
+- **Adapter Pattern:** PlotlyAdapter provides unified interface for Plotly.js
+- **Facade Pattern:** signalExtractor.js hides complexity of bit operations, type conversions, and endianness
+- **Context API:** DataContext shares processed CAN data across routes (src/App.jsx:10)
+- **Memoization:** useMemo for signal extraction and ArbID list generation (src/components/plots/PlotsPage.jsx:36, 42)
 
 ## **Phase 4: Heatmap Visualization**
 
